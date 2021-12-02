@@ -111,9 +111,7 @@ class _AddRecordState extends State<AddRecord> {
             SizedBox(
               height: 80.h,
             ),
-            buttonWidget('Save Data', () {
-              // AppRouter.router.pushWithReplacementFunction(HomePage());
-            })
+            buttonWidget('Save Data', () {})
           ],
         ),
       ),

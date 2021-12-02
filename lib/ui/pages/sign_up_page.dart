@@ -37,8 +37,6 @@ class SignUpPage extends StatelessWidget {
                   children: [
                     TextFormField(
                       controller: userNameController,
-                      // style: TextStyle(
-                      //     fontSize: 14.sp, color: const Color(0xff404040)),
                       textInputAction: TextInputAction.next,
                       decoration: textFieldInputDecoration(hintText: 'Name'),
                     ),
@@ -48,8 +46,6 @@ class SignUpPage extends StatelessWidget {
                     TextFormField(
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
-                      // style: TextStyle(
-                      //     fontSize: 14.sp, color: const Color(0xff404040)),
                       textInputAction: TextInputAction.next,
                       decoration: textFieldInputDecoration(hintText: 'E-Mail'),
                     ),
@@ -59,8 +55,6 @@ class SignUpPage extends StatelessWidget {
                     TextFormField(
                       controller: passwordController,
                       obscureText: true,
-                      // style: TextStyle(
-                      //     fontSize: 14.sp, color: const Color(0xff404040)),
                       decoration: textFieldInputDecoration(
                           hintText: 'Password', isPassword: true),
                     ),
@@ -70,8 +64,6 @@ class SignUpPage extends StatelessWidget {
                     TextFormField(
                       controller: rePasswordController,
                       obscureText: true,
-                      // style: TextStyle(
-                      //     fontSize: 14.sp, color: const Color(0xff404040)),
                       decoration: textFieldInputDecoration(
                           hintText: 'Re-Password', isPassword: true),
                     ),

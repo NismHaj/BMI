@@ -111,7 +111,7 @@ oldStatusItemWidget() {
         color: Colors.white, borderRadius: BorderRadius.circular(5)),
     child: Table(
       border: TableBorder.all(
-        color: Colors.blue, //borderRadius: BorderRadius.circular(5)
+        color: Colors.blue, // borderRadius: BorderRadius.circular(5)
       ),
       children: [
         TableRow(children: [
