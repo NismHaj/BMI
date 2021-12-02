@@ -1,9 +1,12 @@
 import 'package:bmi_app/ui/widgets/widget.dart';
 import 'package:flutter/material.dart';
-
-import 'current_status.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CompleteInfoPage extends StatefulWidget {
+  String email;
+  String password;
+  String userName;
+  CompleteInfoPage({this.email, this.password, this.userName});
   @override
   State<CompleteInfoPage> createState() => _CompleteInfoPageState();
 }
@@ -12,16 +15,20 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
   int groupValue = 1;
   double lengthItemCount = 0;
   double weightItemCount = 0;
+  static const String male = 'Male';
+  static const String female = 'Female';
+  TextEditingController dateOfBirthController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBarWidget(),
-        body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Container(
-                child: SingleChildScrollView(
-                    child: Column(children: [
-              SizedBox(height: 20),
+      appBar: appBarWidget(),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 100.h),
               Text(
                 'Complete Your',
                 style: headTextStyle1(),
@@ -30,7 +37,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                 'Information',
                 style: headTextStyle1(),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 60.h),
               Row(
                 children: [
                   Expanded(
@@ -40,15 +47,15 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                         children: [
                           headText2Widget('Gender'),
                           SizedBox(
-                            height: 40,
+                            height: 40.h,
                           ),
                           headText2Widget('Weight'),
                           SizedBox(
-                            height: 40,
+                            height: 40.h,
                           ),
                           headText2Widget('Length'),
                           SizedBox(
-                            height: 40,
+                            height: 40.h,
                           ),
                           headText2Widget('Date of Birth'),
                         ],
@@ -59,22 +66,27 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                         children: [
                           Row(
                             children: [
-                              Radio(
-                                  value: 1,
-                                  groupValue: groupValue,
-                                  onChanged: (value) {
-                                    groupValue = value;
-                                    setState(() {});
-                                  }),
-                              Text(
-                                'Male',
+                              SizedBox(
+                                width: 20.w,
+                                height: 20.h,
+                                child: Radio(
+                                    value: 1,
+                                    groupValue: groupValue,
+                                    onChanged: (value) {
+                                      groupValue = value;
+                                      setState(() {});
+                                    }),
+                              ),
+                              const Text(
+                                male,
                                 style: TextStyle(
                                   color: Colors.blue,
                                 ),
                               ),
                               Expanded(child: Container()),
                               SizedBox(
-                                width: 30,
+                                width: 20.w,
+                                height: 20.h,
                                 child: Radio(
                                     value: 2,
                                     groupValue: groupValue,
@@ -84,7 +96,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                                     }),
                               ),
                               const Text(
-                                'Female',
+                                female,
                                 style: TextStyle(
                                   color: Colors.blue,
                                 ),
@@ -92,7 +104,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                             ],
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 30.h,
                           ),
                           Row(
                             children: [
@@ -102,7 +114,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                                 });
                               }),
                               SizedBox(
-                                width: 5,
+                                width: 5.w,
                               ),
                               const Text(
                                 'kg',
@@ -111,7 +123,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                             ],
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 30.h,
                           ),
                           Row(
                             children: [
@@ -121,7 +133,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                                 });
                               }),
                               SizedBox(
-                                width: 5,
+                                width: 5.w,
                               ),
                               const Text(
                                 'cm',
@@ -130,35 +142,36 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                             ],
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 30.h,
                           ),
                           SizedBox(
-                            height: 30,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(0),
-                                      borderSide:
-                                          BorderSide(color: Colors.blue)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(0),
-                                      borderSide:
-                                          BorderSide(color: Colors.blue))),
+                            height: 55.h,
+                            child: TextFormField(
+                              maxLength: 4,
+                              keyboardType: TextInputType.number,
+                              controller: dateOfBirthController,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'you should enter your date of birth';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              decoration: detailsInputDecorationWidget(),
                             ),
-                          )
+                          ),
                         ],
                       ))
                 ],
               ),
               SizedBox(
-                height: 80,
+                height: 80.h,
               ),
-              buttonWidget('Save Data', () {
-                Navigator.of(context)
-                    .pushReplacement(MaterialPageRoute(builder: (context) {
-                  return CurrentStatus();
-                }));
-              })
-            ])))));
+              buttonWidget('Save Data', () {})
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

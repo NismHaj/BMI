@@ -1,74 +1,72 @@
 import 'package:bmi_app/ui/pages/sign_up_page.dart';
 import 'package:bmi_app/ui/widgets/widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'complet_your_info.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LogInPage extends StatelessWidget {
-  TextEditingController userController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarWidget(),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Center(
+      resizeToAvoidBottomInset: false,
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Welcome Back',
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
+                  style: headTextStyle1(),
                 ),
                 Text(
-                  'If you already have an account, log in',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                  'If you already have an account log in',
+                  style: subTextStyle1(),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 30.h,
                 ),
-                TextFormField(
-                  controller: userController,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  decoration: textFieldInputDecoration(hintText: 'E-Mail'),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: textFieldInputDecoration(
-                      hintText: 'Password', isPassword: true),
-                ),
-                SizedBox(
-                  height: 80,
-                ),
-                Container(
-                  width: 300,
-                  child: buttonWidget('LOG IN', () {
-                    Navigator.of(context)
-                        .pushReplacement(MaterialPageRoute(builder: (context) {
-                      return CompleteInfoPage();
-                    }));
-                  }),
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(5)),
+                Column(
+                  children: [
+                    TextFormField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      // style: TextStyle(
+                      //     fontSize: 14.sp, color: const Color(0xff404040)),
+                      textInputAction: TextInputAction.next,
+                      decoration: textFieldInputDecoration(hintText: 'E-Mail'),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    TextFormField(
+                      controller: passwordController,
+                      obscureText: true,
+                      // style: TextStyle(
+                      //     fontSize: 14.sp, color: const Color(0xff404040)),
+                      decoration: textFieldInputDecoration(
+                          hintText: 'Password', isPassword: true),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 80.h,
+                ),
+                buttonWidget('LOG IN', () {}),
+                SizedBox(
+                  height: 15.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('You Don\'t Hava an Account?'),
+                    const Text('You Don\'t Hava an Account?'),
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
@@ -78,7 +76,7 @@ class LogInPage extends StatelessWidget {
                         },
                         child: Text('Sign Up'))
                   ],
-                )
+                ),
               ],
             ),
           ),

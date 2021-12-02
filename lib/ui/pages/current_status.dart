@@ -1,19 +1,25 @@
 import 'package:bmi_app/ui/widgets/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CurrentStatus extends StatelessWidget {
+class CurrentStatus extends StatefulWidget {
+  @override
+  State<CurrentStatus> createState() => _CurrentStatusState();
+}
+
+class _CurrentStatusState extends State<CurrentStatus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: appBarWidget(),
         body: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -21,15 +27,15 @@ class CurrentStatus extends StatelessWidget {
                     Text(
                       'Hi, ',
                       style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
+                          color: Colors.blue,
+                          fontSize: 35.sp,
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
                       'Mohammed',
                       style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
+                          color: Colors.blue,
+                          fontSize: 35.sp,
                           fontWeight: FontWeight.w600),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -37,38 +43,40 @@ class CurrentStatus extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
                 headText2Widget('Current Status'),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 Container(
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   width: double.infinity,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.blue),
-                      borderRadius: BorderRadius.circular(5)),
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(5.r)),
                   child: Center(
                       child: Text(
-                    'Normal (still good)',
-                    style: TextStyle(color: Colors.grey, fontSize: 20),
+                    'Normal (still Good!)',
+                    style: TextStyle(color: Colors.grey, fontSize: 20.sp),
                   )),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
                 headText2Widget('Old Status'),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
                 Container(
                   width: double.infinity,
                   height: 300,
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                   decoration: BoxDecoration(
                       color: Colors.blue,
-                      borderRadius: BorderRadius.circular(5)),
+                      borderRadius: BorderRadius.circular(5.r)),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -81,13 +89,13 @@ class CurrentStatus extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 30.h,
                 ),
                 Row(
                   children: [
                     Expanded(child: buttonWidget('Add Food', () {})),
                     SizedBox(
-                      width: 10,
+                      width: 10.w,
                     ),
                     Expanded(
                         child: buttonWidget(
@@ -97,10 +105,12 @@ class CurrentStatus extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
                 buttonWidget('View Food', () {}, width: double.infinity),
-                SizedBox(height: 20),
+                SizedBox(
+                  height: 20.h,
+                ),
                 Center(
                   child: const Text(
                     'Logout',

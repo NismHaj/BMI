@@ -132,3 +132,13 @@ oldStatusItemWidget() {
     ),
   );
 }
+
+detailsInputDecorationWidget() {
+  return InputDecoration(
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0),
+          borderSide: const BorderSide(color: Colors.blue)),
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0),
+          borderSide: const BorderSide(color: Colors.blue)));
+}
