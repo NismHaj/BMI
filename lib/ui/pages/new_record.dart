@@ -55,24 +55,24 @@ class _AddRecordState extends State<AddRecord> {
                       Row(
                         children: [
                           SizedBox(
-                              width: 20.w,
-                              height: 20.h,
+                              // width: 20.w,
+                              // height: 20.h,
                               child: Row(
-                                children: [
-                                  counterIncDec(weightItemCount, (newValue) {
-                                    setState(() {
-                                      weightItemCount = newValue;
-                                    });
-                                  }),
-                                  SizedBox(
-                                    width: 5.w,
-                                  ),
-                                  const Text(
-                                    'kg',
-                                    style: TextStyle(color: Colors.blue),
-                                  )
-                                ],
-                              )),
+                            children: [
+                              counterIncDec(weightItemCount, (newValue) {
+                                setState(() {
+                                  weightItemCount = newValue;
+                                });
+                              }),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              const Text(
+                                'kg',
+                                style: TextStyle(color: Colors.blue),
+                              )
+                            ],
+                          )),
                           SizedBox(
                             height: 30.h,
                           ),

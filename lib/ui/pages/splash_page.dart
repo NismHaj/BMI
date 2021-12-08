@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'add_food_details.dart';
+import 'edit_food_details.dart';
+import 'food_list.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -20,7 +23,7 @@ class _SplashPageState extends State<SplashPage> {
         ),
         () {});
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-      return LogInPage();
+      return EditFoodDetails();
     }));
   }
 
