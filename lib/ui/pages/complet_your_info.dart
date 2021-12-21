@@ -1,3 +1,13 @@
+import 'dart:math';
+
+import 'package:bmi_app/bmi_methods/bmi_methods.dart';
+import 'package:bmi_app/helpers/auth_helper.dart';
+import 'package:bmi_app/helpers/fire_store_helper.dart';
+import 'package:bmi_app/helpers/shared_preferance_helper.dart';
+import 'package:bmi_app/models/record_model.dart';
+import 'package:bmi_app/models/user_model.dart';
+import 'package:bmi_app/router/app_router.dart';
+import 'package:bmi_app/ui/pages/current_status.dart';
 import 'package:bmi_app/ui/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +27,50 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
   double weightItemCount = 0;
   static const String male = 'Male';
   static const String female = 'Female';
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController dateOfBirthController = TextEditingController();
+  save() async {
+    if (formKey.currentState.validate()) {
+      AuthHelper.authHelper
+          .signUpWithEmailAndPassword(
+              widget.email, widget.password, widget.userName)
+          .then((value) {
+        if (value != null) {
+          ///////////BMI Equation
+          double currentBMI = (weightItemCount /
+                  pow(lengthItemCount / 100.0, 2)) *
+              BMIMethods.getAgePercent(dateOfBirthController.text, groupValue);
+          ////////////current status
+          String currentStatusAsString = BMIMethods.getStatus(
+              BMIMethods.getCategory(currentBMI), 0.0, 0.0);
+          //////////user model
+          UserModel userModel = UserModel(
+            email: widget.email,
+            userName: widget.userName,
+            gender: groupValue == 1 ? male : female,
+            dateOfBirth: dateOfBirthController.text,
+          );
+          //////////record model
+          RecordModel recordModel = RecordModel(
+              weight: weightItemCount,
+              length: lengthItemCount,
+              recordCategory: BMIMethods.getCategory(currentBMI),
+              currentStatusAsString: currentStatusAsString,
+              currentStatusAsDouble: currentBMI);
+          ///////////add user to firestore
+          FirestoreHelper.firestoreHelper.addUserToFirestore(userModel.toMap());
+          //////////add record to the user
+          FirestoreHelper.firestoreHelper
+              .addRecordToTheUser(recordModel, userModel.email);
+          ///////set user info and state in shared preference
+          SpHelper.spHelper.setUserInfo(userModel);
+          SpHelper.spHelper.setUserLoggedInState(true);
+          AppRouter.router.pushWithReplacementFunction(CurrentStatus());
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,58 +159,67 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                           SizedBox(
                             height: 30.h,
                           ),
-                          Row(
-                            children: [
-                              counterIncDec(weightItemCount, (newValue) {
-                                setState(() {
-                                  weightItemCount = newValue;
-                                });
-                              }),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              const Text(
-                                'kg',
-                                style: TextStyle(color: Colors.blue),
-                              )
-                            ],
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                counterIncDec(weightItemCount, (newValue) {
+                                  setState(() {
+                                    weightItemCount = newValue;
+                                  });
+                                }),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                const Text(
+                                  'kg',
+                                  style: TextStyle(color: Colors.blue),
+                                )
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: 30.h,
                           ),
-                          Row(
-                            children: [
-                              counterIncDec(lengthItemCount, (newValue) {
-                                setState(() {
-                                  lengthItemCount = newValue;
-                                });
-                              }),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              const Text(
-                                'cm',
-                                style: TextStyle(color: Colors.blue),
-                              )
-                            ],
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                counterIncDec(lengthItemCount, (newValue) {
+                                  setState(() {
+                                    lengthItemCount = newValue;
+                                  });
+                                }),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                const Text(
+                                  'cm',
+                                  style: TextStyle(color: Colors.blue),
+                                )
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: 30.h,
                           ),
                           SizedBox(
                             height: 55.h,
-                            child: TextFormField(
-                              maxLength: 4,
-                              keyboardType: TextInputType.number,
-                              controller: dateOfBirthController,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'you should enter your date of birth';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              decoration: detailsInputDecorationWidget(),
+                            child: Form(
+                              key: formKey,
+                              child: TextFormField(
+                                maxLength: 4,
+                                keyboardType: TextInputType.number,
+                                controller: dateOfBirthController,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'you should enter your date of birth';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                decoration: detailsInputDecorationWidget(),
+                              ),
                             ),
                           ),
                         ],
@@ -167,7 +229,9 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
               SizedBox(
                 height: 80.h,
               ),
-              buttonWidget('Save Data', () {})
+              buttonWidget('Save Data', () {
+                save();
+              })
             ],
           ),
         ),

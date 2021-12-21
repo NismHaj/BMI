@@ -1,7 +1,9 @@
+import 'package:bmi_app/router/app_router.dart';
 import 'package:bmi_app/ui/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'complet_your_info.dart';
 import 'login_page.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -9,6 +11,7 @@ class SignUpPage extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,46 +36,88 @@ class SignUpPage extends StatelessWidget {
                 SizedBox(
                   height: 30.h,
                 ),
-                Column(
-                  children: [
-                    TextFormField(
-                      controller: userNameController,
-                      textInputAction: TextInputAction.next,
-                      decoration: textFieldInputDecoration(hintText: 'Name'),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    TextFormField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      decoration: textFieldInputDecoration(hintText: 'E-Mail'),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    TextFormField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: textFieldInputDecoration(
-                          hintText: 'Password', isPassword: true),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    TextFormField(
-                      controller: rePasswordController,
-                      obscureText: true,
-                      decoration: textFieldInputDecoration(
-                          hintText: 'Re-Password', isPassword: true),
-                    ),
-                  ],
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        validator: (value) {
+                          return value.isEmpty || value.length < 3
+                              ? 'User Name should be more than 2 characters!'
+                              : null;
+                        },
+                        controller: userNameController,
+                        // style: TextStyle(
+                        //     fontSize: 14.sp, color: const Color(0xff404040)),
+                        textInputAction: TextInputAction.next,
+                        decoration: textFieldInputDecoration(hintText: 'Name'),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          return regExp().hasMatch(value)
+                              ? null
+                              : 'Please enter a valid email!';
+                        },
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        // style: TextStyle(
+                        //     fontSize: 14.sp, color: const Color(0xff404040)),
+                        textInputAction: TextInputAction.next,
+                        decoration:
+                            textFieldInputDecoration(hintText: 'E-Mail'),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          return value.isEmpty || value.length < 7
+                              ? 'Password should be more than 6 characters'
+                              : null;
+                        },
+                        controller: passwordController,
+                        obscureText: true,
+                        // style: TextStyle(
+                        //     fontSize: 14.sp, color: const Color(0xff404040)),
+                        decoration: textFieldInputDecoration(
+                            hintText: 'Password', isPassword: true),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          return passwordController.text !=
+                                  rePasswordController.text
+                              ? 'Passwords not equals'
+                              : null;
+                        },
+                        controller: rePasswordController,
+                        obscureText: true,
+                        // style: TextStyle(
+                        //     fontSize: 14.sp, color: const Color(0xff404040)),
+                        decoration: textFieldInputDecoration(
+                            hintText: 'Re-Password', isPassword: true),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 80.h,
                 ),
-                buttonWidget('CREATE', () {}),
+                buttonWidget('CREATE', () {
+                  if (formKey.currentState.validate()) {
+                    AppRouter.router
+                        .pushWithReplacementFunction(CompleteInfoPage(
+                      email: emailController.text,
+                      password: passwordController.text,
+                      userName: userNameController.text,
+                    ));
+                  }
+                }),
                 SizedBox(
                   height: 15.h,
                 ),
@@ -82,12 +127,10 @@ class SignUpPage extends StatelessWidget {
                     const Text('You Hava an Account?'),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) {
-                            return LogInPage();
-                          }));
+                          AppRouter.router
+                              .pushWithReplacementFunction(LogInPage());
                         },
-                        child: const Text('LogIn'))
+                        child: const Text('Login'))
                   ],
                 ),
               ],

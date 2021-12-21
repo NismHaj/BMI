@@ -1,8 +1,9 @@
+import 'package:bmi_app/helpers/shared_preferance_helper.dart';
+import 'package:bmi_app/router/app_router.dart';
+import 'package:bmi_app/ui/pages/complet_your_info.dart';
+import 'package:bmi_app/ui/pages/current_status.dart';
+import 'package:bmi_app/ui/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
-import 'add_food_details.dart';
-import 'edit_food_details.dart';
-import 'food_list.dart';
-import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -18,25 +19,26 @@ class _SplashPageState extends State<SplashPage> {
 
   navigateToHomeScreen() async {
     await Future.delayed(
-        Duration(
+        const Duration(
           seconds: 2,
         ),
         () {});
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-      return EditFoodDetails();
-    }));
+    AppRouter.router.pushWithReplacementFunction(
+        SpHelper.spHelper.getUserLoggedInState() == true
+            ? CurrentStatus()
+            : SignUpPage());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color(0xFFf7f7f7),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'lib/ui/assets/images/bmi_logo.jpg',
+              'lib/ui/assets/images/bmi_logo.png',
               width: 200,
               height: 200,
             ),

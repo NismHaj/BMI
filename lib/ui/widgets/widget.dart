@@ -1,6 +1,32 @@
+import 'package:bmi_app/models/food_detailed_model.dart';
+import 'package:bmi_app/models/record_model.dart';
+import 'package:bmi_app/router/app_router.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:spinner_input/spinner_input.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:spinner_input/spinner_input.dart';
+
+showCustomDialog(String message, [Function function]) {
+  showDialog(
+      context: AppRouter.router.routerKey.currentContext,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  if (function == null) {
+                    AppRouter.router.back();
+                  } else {
+                    function();
+                    AppRouter.router.back();
+                  }
+                },
+                child: const Text('OK'))
+          ],
+        );
+      });
+}
 
 InputDecoration textFieldInputDecoration({hintText, isPassword = false}) {
   return InputDecoration(
@@ -15,7 +41,7 @@ buttonWidget(text, function, {width = 300.0}) {
   return Container(
       width: width,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(5.r),
         color: Colors.blue,
       ),
       child: MaterialButton(
@@ -28,31 +54,36 @@ buttonWidget(text, function, {width = 300.0}) {
       ));
 }
 
-appBarWidget({action}) {
+appBarWidget() {
   return AppBar(
     centerTitle: true,
     title: const Text(
       'BMI Analyzer',
     ),
-    actions: action,
   );
 }
 
 headTextStyle1() {
   return TextStyle(
-      fontSize: 35, fontWeight: FontWeight.bold, color: Colors.blue);
+      fontSize: 35.sp, fontWeight: FontWeight.bold, color: Colors.blue);
 }
 
 headText2Widget(text) {
   return Text(
     text,
     style: TextStyle(
-        color: Colors.blue, fontSize: 18, fontWeight: FontWeight.w600),
+        color: Colors.blue, fontSize: 20.sp, fontWeight: FontWeight.w600),
   );
 }
 
 subTextStyle1() {
-  return TextStyle(fontSize: 16, color: Colors.grey);
+  return TextStyle(fontSize: 16.sp, color: Colors.grey);
+}
+
+regExp() {
+  return RegExp(
+      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$",
+      caseSensitive: false);
 }
 
 counterIncDec(itemCount, function) {
@@ -66,24 +97,12 @@ counterIncDec(itemCount, function) {
       step: 1,
       plusButton: SpinnerButtonStyle(
         child: Container(
-          child: Icon(
+          child: const Icon(
             Icons.add,
             color: Colors.blue,
             size: 30,
           ),
-          decoration: BoxDecoration(
-              border: Border.symmetric(
-                  horizontal: BorderSide.none,
-                  vertical: BorderSide(color: Colors.blue))),
-        ),
-        color: Color(0xfffafafa),
-        elevation: 0,
-        borderRadius: BorderRadius.circular(0),
-      ),
-      minusButton: SpinnerButtonStyle(
-        child: Container(
-          child: Icon(Icons.remove, color: Colors.blue, size: 30),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border.symmetric(
                   horizontal: BorderSide.none,
                   vertical: BorderSide(color: Colors.blue))),
@@ -92,7 +111,19 @@ counterIncDec(itemCount, function) {
         elevation: 0,
         borderRadius: BorderRadius.circular(0),
       ),
-      middleNumberWidth: 80,
+      minusButton: SpinnerButtonStyle(
+        child: Container(
+          child: const Icon(Icons.remove, color: Colors.blue, size: 30),
+          decoration: const BoxDecoration(
+              border: Border.symmetric(
+                  horizontal: BorderSide.none,
+                  vertical: BorderSide(color: Colors.blue))),
+        ),
+        color: const Color(0xfffafafa),
+        elevation: 0,
+        borderRadius: BorderRadius.circular(0),
+      ),
+      middleNumberWidth: 110.w,
       popupButton: SpinnerButtonStyle(
         color: Colors.white,
         textColor: Colors.blue,
@@ -104,47 +135,42 @@ counterIncDec(itemCount, function) {
   );
 }
 
-oldStatusItemWidget() {
+oldStatusItemWidget({date = '', RecordModel recordModel}) {
   return Container(
-    height: 100,
-    margin: EdgeInsets.symmetric(vertical: 10),
+    height: 100.h,
+    margin: EdgeInsets.symmetric(vertical: 10.h),
     decoration: BoxDecoration(
-        color: Colors.white, borderRadius: BorderRadius.circular(5)),
+        color: Colors.white, borderRadius: BorderRadius.circular(5.r)),
     child: Table(
       border: TableBorder.all(
-        color: Colors.blue, // borderRadius: BorderRadius.circular(5)
+        color: Colors.blue, //borderRadius: BorderRadius.circular(5.r)
       ),
       children: [
         TableRow(children: [
-          Container(
-            height: 50,
-            child: Center(child: Center(child: Text('20/1/2020'))),
+          SizedBox(
+            height: 50.h,
+            child: Center(child: Center(child: Text(date))),
           ),
-          Container(height: 50, child: Center(child: Text('60 Kg')))
+          SizedBox(
+              height: 50.h,
+              child: Center(child: Text(recordModel.weight.toString() + ' Kg')))
         ]),
         TableRow(children: [
-          Container(
-            height: 50,
-            child: Center(child: Text('Normal')),
+          SizedBox(
+            height: 50.h,
+            child: Center(child: Text(recordModel.recordCategory)),
           ),
-          Container(height: 50, child: Center(child: Text('170 Cm')))
+          SizedBox(
+              height: 50.h,
+              child: Center(child: Text(recordModel.length.toString() + ' Cm')))
         ])
       ],
     ),
   );
 }
 
-detailsInputDecorationWidget() {
-  return InputDecoration(
-      enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(0),
-          borderSide: const BorderSide(color: Colors.blue)),
-      border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(0),
-          borderSide: const BorderSide(color: Colors.blue)));
-}
-
-foodListItem() {
+foodListItem(FoodDetailsModel foodDetailsModel, Function deleteFunction,
+    Function editFunction) {
   return SizedBox(
     height: 80.h,
     child: Row(
@@ -152,8 +178,11 @@ foodListItem() {
         Expanded(
           flex: 1,
           child: Container(
-            child: Center(
-              child: Text('Picture'),
+            width: double.infinity,
+            height: double.infinity,
+            child: Image.network(
+              foodDetailsModel.imageUrl,
+              fit: BoxFit.cover,
             ),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.blue),
@@ -170,22 +199,22 @@ foodListItem() {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Expanded(
                         child: Text(
-                      'Salamon',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                      foodDetailsModel.foodName,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 18),
                     )),
                     Expanded(
-                        child: Text('Fish',
-                            style: TextStyle(
+                        child: Text(foodDetailsModel.foodCategory,
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 15,
                                 color: Colors.grey))),
                     Expanded(
-                        child: Text('22 cal/g',
-                            style: TextStyle(
+                        child: Text(foodDetailsModel.foodCalory + ' cal/g',
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 15,
                                 color: Colors.grey)))
@@ -199,25 +228,28 @@ foodListItem() {
                       padding: EdgeInsets.only(right: 10.w, top: 10.h),
                       width: 80.w,
                       height: 40.h,
-                      child: buttonWidget('Edit', () {}),
+                      child: buttonWidget('Edit', editFunction),
                     ),
-                    Container(
-                      height: 20.h,
-                      width: 30.w,
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(5),
-                          topLeft: Radius.circular(5),
-                          bottomLeft: Radius.circular(5),
+                    GestureDetector(
+                      onTap: deleteFunction,
+                      child: Container(
+                        height: 20.h,
+                        width: 30.w,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(5),
+                            topLeft: Radius.circular(5),
+                            bottomLeft: Radius.circular(5),
+                          ),
                         ),
+                        child: const Center(
+                            child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 16,
+                        )),
                       ),
-                      child: const Center(
-                          child: Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 16,
-                      )),
                     ),
                   ],
                 )
@@ -232,4 +264,36 @@ foodListItem() {
       ],
     ),
   );
+}
+
+detailsInputDecorationWidget() {
+  return InputDecoration(
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0),
+          borderSide: const BorderSide(color: Colors.blue)),
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0),
+          borderSide: const BorderSide(color: Colors.blue)));
+}
+
+List getCategoriesList() {
+  return [
+    'Fruits',
+    'Fish',
+    'Carbohydrate',
+    'Vegetable',
+    'Dairy',
+    'Grains',
+    'Protein',
+    'Oils'
+  ];
+}
+
+getCategoriesMealList() {
+  return [
+    'cal/spoon',
+    'cal/cup',
+    'cal/g',
+    'cal/piece',
+  ];
 }

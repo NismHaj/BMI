@@ -1,11 +1,46 @@
+import 'package:bmi_app/helpers/auth_helper.dart';
+import 'package:bmi_app/helpers/fire_store_helper.dart';
+import 'package:bmi_app/helpers/shared_preferance_helper.dart';
+import 'package:bmi_app/models/user_model.dart';
+import 'package:bmi_app/router/app_router.dart';
+import 'package:bmi_app/ui/pages/complet_your_info.dart';
+import 'package:bmi_app/ui/pages/current_status.dart';
 import 'package:bmi_app/ui/pages/sign_up_page.dart';
 import 'package:bmi_app/ui/widgets/widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LogInPage extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  QuerySnapshot querySnapshot;
+  save() async {
+    if (formKey.currentState.validate()) {
+      AuthHelper.authHelper
+          .signInWithEmailAndPassword(
+        emailController.text,
+        passwordController.text,
+      )
+          .then((value) async {
+        if (value != null) {
+          UserModel userModel = value;
+          QuerySnapshot signInSnapShot = await FirestoreHelper.firestoreHelper
+              .getUserByEmail(userModel.email);
+          SpHelper.spHelper.setUserInfo(UserModel(
+              email: userModel.email,
+              userName: signInSnapShot.docs[0][FirestoreHelper.userNameKey],
+              gender: signInSnapShot.docs[0][FirestoreHelper.genderKey],
+              dateOfBirth: signInSnapShot.docs[0]
+                  [FirestoreHelper.dateOfBirthKey]));
+          SpHelper.spHelper.setUserLoggedInState(true);
+          AppRouter.router.pushWithReplacementFunction(CurrentStatus());
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,32 +65,52 @@ class LogInPage extends StatelessWidget {
                 SizedBox(
                   height: 30.h,
                 ),
-                Column(
-                  children: [
-                    TextFormField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      decoration: textFieldInputDecoration(hintText: 'E-Mail'),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    TextFormField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: textFieldInputDecoration(
-                          hintText: 'Password', isPassword: true),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                  ],
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        validator: (value) {
+                          return regExp().hasMatch(value)
+                              ? null
+                              : 'Please enter a valid email!';
+                        },
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        // style: TextStyle(
+                        //     fontSize: 14.sp, color: const Color(0xff404040)),
+                        textInputAction: TextInputAction.next,
+                        decoration:
+                            textFieldInputDecoration(hintText: 'E-Mail'),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          return value.isEmpty || value.length < 7
+                              ? 'Password should be more than 6 characters'
+                              : null;
+                        },
+                        controller: passwordController,
+                        obscureText: true,
+                        // style: TextStyle(
+                        //     fontSize: 14.sp, color: const Color(0xff404040)),
+                        decoration: textFieldInputDecoration(
+                            hintText: 'Password', isPassword: true),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 80.h,
                 ),
-                buttonWidget('LOG IN', () {}),
+                buttonWidget('LOG IN', () {
+                  save();
+                }),
                 SizedBox(
                   height: 15.h,
                 ),
@@ -65,12 +120,10 @@ class LogInPage extends StatelessWidget {
                     const Text('You Don\'t Hava an Account?'),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) {
-                            return SignUpPage();
-                          }));
+                          AppRouter.router
+                              .pushWithReplacementFunction(SignUpPage());
                         },
-                        child: Text('Sign Up'))
+                        child: const Text('Sign Up'))
                   ],
                 ),
               ],
