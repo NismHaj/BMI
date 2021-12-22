@@ -289,7 +289,7 @@ List getCategoriesList() {
   ];
 }
 
-getCategoriesMealList() {
+List getCategoriesMealList() {
   return [
     'cal/spoon',
     'cal/cup',

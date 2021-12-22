@@ -20,9 +20,11 @@ class EditFoodDetails extends StatefulWidget {
 
 class _EditFoodDetailsState extends State<EditFoodDetails> {
   List categories = getCategoriesList();
+  List amountCategories = getCategoriesMealList();
   TextEditingController foodNameController = TextEditingController();
   TextEditingController caloryController = TextEditingController();
   String dropDownValue = 'Fruits';
+  String amountDropDownValue = 'cal/spoon';
   String imageUrl;
   bool uploadPhotoClicked = false;
   save() async {
@@ -89,75 +91,94 @@ class _EditFoodDetailsState extends State<EditFoodDetails> {
                           ],
                         )),
                     Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 35.h,
-                              child: TextField(
-                                  controller: foodNameController,
-                                  decoration: detailsInputDecorationWidget()),
-                            ),
-                            SizedBox(
-                              height: 30.h,
-                            ),
-                            SizedBox(
-                              height: 35.h,
-                              child: Container(
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue),
-                                  borderRadius: BorderRadius.circular(0),
-                                ),
-                                child: DropdownButton(
-                                  iconDisabledColor: Colors.blue,
-                                  iconEnabledColor: Colors.blue,
-                                  underline: const SizedBox(),
-                                  value: dropDownValue,
-                                  isExpanded: true,
-                                  items: categories.map((e) {
-                                    return DropdownMenuItem(
-                                      child: Text(e),
-                                      value: e,
-                                    );
-                                  }).toList(),
-                                  onChanged: (v) {
-                                    dropDownValue = v;
-                                    setState(() {});
-                                  },
-                                ),
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 35.h,
+                            child: TextField(
+                                controller: foodNameController,
+                                decoration: detailsInputDecorationWidget()),
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          SizedBox(
+                            height: 35.h,
+                            child: Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.blue),
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              child: DropdownButton(
+                                iconDisabledColor: Colors.blue,
+                                iconEnabledColor: Colors.blue,
+                                underline: const SizedBox(),
+                                value: dropDownValue,
+                                isExpanded: true,
+                                items: categories.map((e) {
+                                  return DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  );
+                                }).toList(),
+                                onChanged: (v) {
+                                  dropDownValue = v;
+                                  setState(() {});
+                                },
                               ),
                             ),
-                            SizedBox(
-                              height: 30.h,
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          SizedBox(
+                            height: 35.h,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: TextField(
+                                      controller: caloryController,
+                                      decoration:
+                                          detailsInputDecorationWidget()),
+                                ),
+                                Expanded(
+                                    flex: 2,
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.blue),
+                                        borderRadius: BorderRadius.circular(0),
+                                      ),
+                                      child: DropdownButton(
+                                        iconDisabledColor: Colors.blue,
+                                        iconEnabledColor: Colors.blue,
+                                        underline: const SizedBox(),
+                                        value: amountDropDownValue,
+                                        isExpanded: true,
+                                        items: amountCategories.map((e) {
+                                          return DropdownMenuItem(
+                                            child: Text(e),
+                                            value: e,
+                                          );
+                                        }).toList(),
+                                        onChanged: (v) {
+                                          amountDropDownValue = v;
+                                          setState(() {});
+                                        },
+                                      ),
+                                    )),
+                              ],
                             ),
-                            SizedBox(
-                              height: 35.h,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: TextField(
-                                        controller: caloryController,
-                                        decoration:
-                                            detailsInputDecorationWidget()),
-                                  ),
-                                  const Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      ' cal/g',
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 18),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 65.h,
-                            ),
-                          ],
-                        ))
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 65.h,
+                    ),
                   ],
                 ),
                 SizedBox(

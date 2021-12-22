@@ -5,6 +5,7 @@ import 'package:bmi_app/helpers/shared_preferance_helper.dart';
 import 'package:bmi_app/models/record_model.dart';
 import 'package:bmi_app/provider/firestore_provider.dart';
 import 'package:bmi_app/router/app_router.dart';
+import 'package:bmi_app/ui/pages/add_meal.dart';
 import 'package:bmi_app/ui/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -165,9 +166,24 @@ class _CurrentStatusState extends State<CurrentStatus> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  buttonWidget('View Food', () {
-                    AppRouter.router.pushFunction(FoodListPage());
-                  }, width: double.infinity),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: buttonWidget('View Food', () {
+                        AppRouter.router.pushFunction(FoodListPage());
+                      })),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                          child: buttonWidget(
+                        'Add Meal',
+                        () {
+                          AppRouter.router.pushFunction(AddMealDetailsPage());
+                        },
+                      )),
+                    ],
+                  ),
                   SizedBox(
                     height: 20.h,
                   ),

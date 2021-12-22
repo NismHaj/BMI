@@ -15,7 +15,7 @@ void main() async {
       child: MaterialApp(
         navigatorKey: AppRouter.router.routerKey,
         theme: ThemeData(
-            primaryColor: Colors.blue,
+            primaryColor: Color(0xFF0B85D8),
             scaffoldBackgroundColor: const Color(0xfffafafa)),
         home: ScreenUtilInit(
           builder: () {

@@ -17,9 +17,11 @@ class AddFoodDetailsPage extends StatefulWidget {
 
 class _AddFoodDetailsPageState extends State<AddFoodDetailsPage> {
   List categories = getCategoriesList();
+  List amountCategories = getCategoriesMealList();
   TextEditingController foodNameController = TextEditingController();
   TextEditingController caloryController = TextEditingController();
   String dropDownValue = 'Fruits';
+  String amountDropDownValue = 'cal/spoon';
   String imageUrl;
   save() async {
     FoodDetailsModel foodDetailsModel = FoodDetailsModel(
@@ -119,20 +121,40 @@ class _AddFoodDetailsPageState extends State<AddFoodDetailsPage> {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    flex: 3,
+                                    flex: 1,
                                     child: TextField(
                                         controller: caloryController,
                                         decoration:
                                             detailsInputDecorationWidget()),
                                   ),
-                                  const Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      ' cal/g',
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 18),
-                                    ),
-                                  )
+                                  Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        margin: EdgeInsets.only(left: 10),
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.blue),
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        child: DropdownButton(
+                                          iconDisabledColor: Colors.blue,
+                                          iconEnabledColor: Colors.blue,
+                                          underline: const SizedBox(),
+                                          value: amountDropDownValue,
+                                          isExpanded: true,
+                                          items: amountCategories.map((e) {
+                                            return DropdownMenuItem(
+                                              child: Text(e),
+                                              value: e,
+                                            );
+                                          }).toList(),
+                                          onChanged: (v) {
+                                            amountDropDownValue = v;
+                                            setState(() {});
+                                          },
+                                        ),
+                                      )),
                                 ],
                               ),
                             ),
