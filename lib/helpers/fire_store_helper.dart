@@ -24,6 +24,7 @@ class FirestoreHelper {
   static const String foodNameKey = 'foodName';
   static const String foodCaloryKey = 'foodCalory';
   static const String foodCategoryKey = 'foodCategory';
+  static const String amountCatKey = 'amountCat';
 
   addUserToFirestore(userMap) async {
     try {

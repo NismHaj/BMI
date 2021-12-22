@@ -28,6 +28,7 @@ class _AddFoodDetailsPageState extends State<AddFoodDetailsPage> {
       foodCalory: caloryController.text,
       foodName: foodNameController.text,
       foodCategory: dropDownValue,
+      amountCat: amountDropDownValue,
       imageUrl: imageUrl,
     );
     await FirestoreHelper.firestoreHelper.addFoodToFoodListToTheUser(

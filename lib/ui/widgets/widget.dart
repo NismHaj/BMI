@@ -213,7 +213,10 @@ foodListItem(FoodDetailsModel foodDetailsModel, Function deleteFunction,
                                 fontSize: 15,
                                 color: Colors.grey))),
                     Expanded(
-                        child: Text(foodDetailsModel.foodCalory + ' cal/g',
+                        child: Text(
+                            foodDetailsModel.foodCalory +
+                                '' +
+                                foodDetailsModel.amountCat,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 15,

@@ -29,11 +29,11 @@ class _EditFoodDetailsState extends State<EditFoodDetails> {
   bool uploadPhotoClicked = false;
   save() async {
     FoodDetailsModel foodDetailsModel = FoodDetailsModel(
-      foodCalory: caloryController.text,
-      foodName: foodNameController.text,
-      foodCategory: dropDownValue,
-      imageUrl: imageUrl,
-    );
+        foodCalory: caloryController.text,
+        foodName: foodNameController.text,
+        foodCategory: dropDownValue,
+        imageUrl: imageUrl,
+        amountCat: amountDropDownValue);
 
     await FirestoreHelper.firestoreHelper.addFoodToFoodListToTheUser(
         foodDetailsModel, SpHelper.spHelper.getUserInfo().email);
@@ -49,6 +49,7 @@ class _EditFoodDetailsState extends State<EditFoodDetails> {
     foodNameController.text = widget.foods.foodName;
     caloryController.text = widget.foods.foodCalory;
     dropDownValue = widget.foods.foodCategory;
+    amountDropDownValue = widget.foods.amountCat;
     imageUrl = widget.foods.imageUrl;
   }
 
